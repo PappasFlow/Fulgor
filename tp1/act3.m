@@ -72,7 +72,8 @@ hold all; %asi se logra q se mantengan graf y cambien color
 
 % Iterar sobre diferentes valores de M2
 for M2 = [4, 8, 16, 32]
-    h_v = 1/M2.*ones(M2,1); %ones crea matris M2x1 de valor 1 
+    h_v = 1/(M2+1).*ones(M2+1,1); %ones crea matris (M2+1)x1 de valor 1
+    %h_v = 1/M2.*ones(M2,1); %ver si no es asi
     % Respuesta al impulso
     H = fft(h_v, POINTS);
     % Respuesta en frecuencia utilizando FFT
