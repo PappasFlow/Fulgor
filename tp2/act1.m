@@ -5,13 +5,13 @@ clc;        % Clear command window
 %% Ejercicio 1
 
 %config
-w0 = 0.1*pi; %frec señal discreta
+w0 = 0.8*pi; %frec señal discreta
 K=2; %Amplitud del tono
 fs = 100e6; %frec muestreo
 OVR = 10; % Oversampling factor
 Nsamples=256; 
 sp=2; %numero de siclos que seran ploteados 
-filtro=2;
+filtro=4;
 %end config
 
 fch = OVR * fs; % Frecuencia de muestreo del tiempo continuo
@@ -49,7 +49,7 @@ switch filtro
         disp('Reconstrucción ideal (filtro sinc)');
     case 4
         % Filtro FIR personalizado
-        Nord = 64; %ajuste del fir
+        Nord = 1024; %ajuste del fir
         dac_filter =OVR * fir1(Nord, fs / fch);
         grpd=Nord/2;
         disp('Filtro FIR personalizado');
@@ -75,9 +75,10 @@ xlabel('Time [ns]', 'Interpreter','latex','FontSize', 12);
 ylabel('Amplitude [V]', 'Interpreter','latex','FontSize', 12);
 grid on
 legend('Discrete samples', 'Salida D/C','signal Reference');
-title('[Act. 1] analisis temporal conversor D/C');
+title('[Act. 1-F] analisis temporal conversor D/C');
 
 %Plote del tiempo extra 
+%{
 figure
 hold all
 stem(t_dis_v*1e9, tone_dis,'o','MarkerSize',6,'MarkerFaceColor','b','MarkerEdgeColor','k'); %discreto
@@ -87,7 +88,8 @@ xlabel('Time [ns]', 'Interpreter','latex','FontSize', 12);
 ylabel('Amplitude [V]', 'Interpreter','latex','FontSize', 12);
 grid on
 legend('Discrete samples','signal Reference');
-title('[Act. 1] Samples vs. signal Reference');
+title('Samples vs. signal Reference');
+%}
 %%
 
 % Plot en frecuencia
@@ -113,7 +115,7 @@ grid on
 xlabel('Frequency [Hz]');
 ylabel('Amplitude [V]');
 legend('Discrete sequence spectrum');
-title('[Act. 1] Analisis espectral tono discreto');
+title('[Act. 1-F] Analisis espectral tono discreto');
 
 subplot 312
 plot(fvec_tc(1:NFFT/2), spect_x_up(1:NFFT/2),'-b','LineWidth',3);
@@ -123,7 +125,7 @@ grid on
 xlabel('Frequency [Hz]');
 ylabel('Amplitude [V]');
 legend('Upsampled discrete sequence', 'DAC Filter response');
-title('[Act. 1] Analisis espectral tono discreto upsample vs filtro reconstrucción');
+title('[Act. 1-F] Analisis espectral tono discreto upsample vs filtro reconstrucción');
 
 subplot 313
 plot(fvec_tc(1:NFFT/2), spect_tc(1:NFFT/2),'-b','LineWidth',3);
@@ -133,4 +135,4 @@ grid on
 xlabel('Frequency [Hz]');
 ylabel('Amplitude [V]');
 legend('Cont. time signal','Cont. Ref. time signal' );
-title('[Act. 1] Analisis espectral tono reconstruido Vs, tono continuo');
+title('[Act. 1-F] Analisis espectral tono reconstruido Vs, tono referencia');
