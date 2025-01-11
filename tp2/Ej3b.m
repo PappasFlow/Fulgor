@@ -34,21 +34,23 @@ figure
 subplot(2, 1, 1);
 p1 = plot(t_cont / 1e-9, tone_cont, '-b', 'Linewidth', 1);
 hold on;
+grid on
 p2 = stem(t_disc / 1e-9, tone_disc, 'r', 'Linewidth', 1.5);
 xlabel('Tiempo (ns)');
 ylabel('Amplitud');
-title('Señales antes del delay');
-legend([p1, p2], 'Señal continua', 'Señal discreta');
+title('Se�ales antes del delay');
+legend([p1, p2], 'Se�al continua', 'Se�al discreta');
 xlim([(1/f)/ 1e-9, 3 * (1/f) / 1e-9]);
 
 subplot(2, 1, 2);
 p3 = plot(t_cont / 1e-9, tone_cont_delay, '-g', 'Linewidth', 1);
 hold on;
+grid on
 p4 = stem(t_disc / 1e-9, tone_disc_delay, 'k', 'Linewidth', 1.5);
 xlabel('Tiempo (ns)');
 ylabel('Amplitud');
-title('Señales después del delay');
-legend([p3, p4], 'Señal continua', 'Señal discreta');
+title('Se�ales despues del delay');
+legend([p3, p4], 'Se�al continua', 'Se�al discreta');
 xlim([(1/f)/ 1e-9, 3 * (1/f)/ 1e-9]);
 
 %Setup FFT
@@ -69,15 +71,16 @@ f_disc = (-NFFT/2:NFFT/2-1)*fs_disc/NFFT;
 %Plot en frecuencia
 figure
 hold on
+grid on
 f1 = plot(f_disc/1e6,tone_disc_fft, 'r');
 f2 = plot(f_disc/1e6,tone_disc_delay_fft, 'b');
 f3 = plot(f_cont/1e6,tone_cont_fft,'c');
 f4 = plot(f_cont/1e6,tone_cont_delay_fft, 'k');
 f5 = plot(f_disc/1e6,h_fft, 'm');
-legend([f1, f2, f3, f4, f5], 'Señal discreta', 'Señal discreta con retardo',...
-                            'Señal continua', 'Señal continua con retardo',...
+legend([f1, f2, f3, f4, f5], 'Se�al discreta', 'Se�al discreta con retardo',...
+                            'Se�al continua', 'Se�al continua con retardo',...
                             'Filtro');
 xlabel('Frecuencia (MHz)');
 ylabel('Amplitud');
-title('Señales y respuesta en frecuencia del filtro');
+title('Se�ales y respuesta en frecuencia del filtro');
 xlim([-200,200]);

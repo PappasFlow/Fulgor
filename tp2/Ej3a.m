@@ -34,20 +34,22 @@ figure
 subplot(2, 1, 1);
 p1 = plot(t_cont / 1e-9, tone_cont, '-b', 'Linewidth', 1);
 hold on;
+grid on
 p2 = stem(t_disc / 1e-9, tone_disc, 'r', 'Linewidth', 1.5);
 xlabel('Tiempo (ns)');
 ylabel('Amplitud');
-title('Señales antes del delay');
-legend([p1, p2], 'Señal continua', 'Señal discreta');
+title('Se�ales antes del delay');
+legend([p1, p2], 'Se�al continua', 'Se�al discreta');
 xlim([(1/f)/ 1e-9, 3 * (1/f) / 1e-9]);
 
 
 subplot(2, 1, 2);
 p3 = plot(t_cont / 1e-9, tone_cont_delay, '-g', 'Linewidth', 1);
 hold on;
+grid on
 p4 = stem(t_disc / 1e-9, tone_disc_delay, 'k', 'Linewidth', 1.5);
 xlabel('Tiempo (ns)');
 ylabel('Amplitud');
-title('Señales después del delay');
-legend([p3, p4], 'Señal continua', 'Señal discreta');
+title('Se�ales despues del delay');
+legend([p3, p4], 'Se�al continua', 'Se�al discreta');
 xlim([(1/f)/ 1e-9, 3 * (1/f)/ 1e-9]);

@@ -9,14 +9,14 @@ OVR = 256;
 fs_disc = 400e6;
 t_disc = (0:n_samples-1) * 1/fs_disc;
 %Se aumenta la amplitud para visualizar mejor en FFT
-tone_disc = 2*cos(2*pi*f * t_disc); 
+tone_disc = cos(2*pi*f * t_disc); 
 
 %Delay en segundos
 time_delay = 390.625e-12;
 
 %Delay Fraccionario con sinc
 frac_delay=time_delay * fs_disc;
-n_taps=31; 
+n_taps=257; 
 [tone_disc_delay, h] = fractional_delay(tone_disc, frac_delay, n_taps);
 
 %Delay Fraccionario con rcos
@@ -42,15 +42,16 @@ f_disc = (-NFFT/2:NFFT/2-1)*fs_disc/NFFT;
 %Plot en frecuencia
 figure
 hold on
+grid on
 f1 = plot(f_disc/1e6,tone_disc_fft, 'r');
 f2 = plot(f_disc/1e6,tone_disc_delay_fft, 'b');
 f3 = plot(f_disc/1e6,yf_fft,'c');
 f4 = plot(f_disc/1e6,h_fft, 'k');
 f5 = plot(f_disc/1e6,h2_fft, 'm');
-legend([f1, f2, f3, f4, f5], 'SeÃ±al discreta', 'SeÃ±al discreta con retardo con sinc',...
-                            'SeÃ±al discreta con retardo con rcos', 'Filtro sinc',...
+legend([f1, f2, f3, f4, f5], 'Señal discreta', 'Señal discreta con retardo con sinc',...
+                            'Señal discreta con retardo con rcos', 'Filtro sinc',...
                             'Filtro rcos');
 xlabel('Frecuencia (MHz)');
 ylabel('Amplitud');
-title('SeÃ±ales y respuesta en frecuencia del filtro');
+title('Señales y respuesta en frecuencia del filtro');
 xlim([-200,200]);
