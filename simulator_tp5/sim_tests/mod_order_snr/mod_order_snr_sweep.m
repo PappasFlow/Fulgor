@@ -42,14 +42,14 @@ for i_M = 1:n_M
     config_s.tx_s.M = M;
     
     % Enable parallel pool for faster processing
-    % Rule of thumb for number of workers: Cores - 1
+    % Rule of thumb for number of workers: Cores - 1    
     parfor i_ber = 1:n_ber
         config_s_p = config_s;
         config_s_p.ch_s.ebno_db = ebno_db_v(i_ber);
     
         fprintf('- Running M=%d(%d/%d) ...\n', M,i_ber,n_ber)
 
-        out_c{i_ber} = m_simulator(config_s_p);q
+        out_c{i_ber} = m_simulator(config_s_p);
     end
     
     name = sprintf('M%d',M);
