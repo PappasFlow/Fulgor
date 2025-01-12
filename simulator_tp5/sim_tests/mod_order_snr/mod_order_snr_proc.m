@@ -10,6 +10,8 @@ if ~exist(out_dir,'dir')
     mkdir(out_dir);
 end
 
+%% Read data
+
 file = [out_dir, 'cfg.mat'];
 load(file);
 
@@ -20,20 +22,18 @@ ber_est_m = zeros(n_M,n_ber);
 ber_theo_m = zeros(n_M,n_ber);
 ebno_db_m = zeros(n_M,n_ber);
 
-%% Read data
-
-for idx_1 = 1:n_M
+for i = 1:n_M
     
-    M = M_v(idx_1);
+    M = M_v(i);
     
     name = sprintf('M%d',M);
     file = [out_dir, 'out_',name,'.mat'];
     load(file);
 
-    for idx_2 = 1:n_ber
+    for j = 1:n_ber
 
-        ber_est_m(idx_1,idx_2) = out_c{idx_2}.ber_est;
-        ber_theo_m(idx_1,idx_2) = out_c{idx_2}.ber_theo;
+        ber_est_m(i,j) = out_c{j}.ber_est;
+        ber_theo_m(i,j) = out_c{j}.ber_theo;
 
     end
 end
@@ -53,24 +53,24 @@ color_c = { [0 0.45 0.74]
 figure; 
 leg = {}; idx_leg = 1;
         
-for idx_1 = 1:n_M
+for i = 1:n_M
     
-    M = M_v(idx_1);
+    M = M_v(i);
     ebno_db_v = get_ebno_from_theo_ber(theo_ber_v,M);
     
-    ber_theo_v = ber_theo_m(idx_1,:);
-    ber_est_v = ber_est_m(idx_1,:);
+    ber_theo_v = ber_theo_m(i,:);
+    ber_est_v = ber_est_m(i,:);
     
     p = semilogy(ebno_db_v, ber_theo_v, '--', 'Linewidth', 1.5);
-    p.Color = color_c{idx_1}; 
+    p.Color = color_c{i}; 
     hold on; grid on;
     leg{idx_leg} = sprintf('Theo. M=%d',M); 
     idx_leg = idx_leg + 1;
     
     p = semilogy(ebno_db_v, ber_est_v, '-o', 'Linewidth', 1);
-    p.MarkerFaceColor = color_c{idx_1};
+    p.MarkerFaceColor = color_c{i};
     p.MarkerEdgeColor = 'k';
-    p.Color = color_c{idx_1}; 
+    p.Color = color_c{i}; 
     leg{idx_leg} = sprintf('Est. M=%d',M); 
     idx_leg = idx_leg + 1;
         
@@ -87,41 +87,3 @@ title(tit, 'Interpreter','latex','FontSize', fz);
 set(gcf, 'Position', [50 50 500 500],'Color', 'w');
 saveas(gcf,[out_dir,sprintf('fig%d.png',idx_fig)]); idx_fig=idx_fig+1;
 
-% SNR Penalty vs M
-
-ber_int = 1e-2;
-
-snr_loss_db_v = zeros(n_M,1);
-
-for idx_1 = 1:n_M
-
-    M = M_v(idx_1);
-    ebno_db_v = get_ebno_from_theo_ber(theo_ber_v,M);
-    
-    ber_theo_v = ber_theo_m(idx_1,:);
-    ber_est_v = ber_est_m(idx_1,:);
-
-    ebno_sim_db = interp1(log10(ber_est_v), ebno_db_v, log10(ber_int));
-    ebno_theo_db = interp1(log10(ber_theo_v), ebno_db_v, log10(ber_int));
-
-    snr_loss_db_v(idx_1) =  ebno_sim_db - ebno_theo_db;
-
-end
-
-figure; 
-leg = {}; idx_leg = 1;
-p = plot(M_v, snr_loss_db_v, '-o', 'Linewidth', 2);
-p.MarkerFaceColor = color_c{1};
-p.MarkerEdgeColor = 'k';
-p.Color = color_c{1}; 
-hold on; grid on;
-
-xlabel('M', 'Interpreter','latex','FontSize', fz);
-ylab = sprintf('SNR loss [dB] @ BER = %.1e',ber_int);
-ylabel(ylab, 'Interpreter','latex','FontSize', fz);
-grid on; ylim([-0.1,ceil(max(snr_loss_db_v))]); 
-
-tit = ['SNR loss vs M',sprintf('BR=%.0f[GBd]', config_s.tx_s.BR/1e9)];
-title(tit, 'Interpreter','latex','FontSize', fz);
-set(gcf, 'Position', [50 50 500 500],'Color', 'w');
-saveas(gcf,[out_dir,sprintf('fig%d.png',idx_fig)]); idx_fig=idx_fig+1;
