@@ -7,7 +7,9 @@ out_dir = out_dir(1:end-length(mfilename));
 out_dir = [out_dir, 'out/'];
 
 if ~exist(out_dir,'dir')
-    mkdir(out_dir);
+    proc_file = mfilename
+    run_file = [proc_file(1:end-4), 'run']
+    error("Output directory not found. Run %s before running %s.", run_file, proc_file)
 end
 
 %% Read data
@@ -41,13 +43,16 @@ end
 
 idx_fig = 1;
 fz = 15;
-color_c = { [0 0.45 0.74]
-            [0.85 0.33 0.1]
-            [0.93 0.69 0.13]
-            [0.49 0.18 0.56]
-            [0.47 0.67 0.19]
-            [0.30 0.75 0.93]
-            [0.64 0.08 0.18]};
+color_c = [
+    "#FF6347"  % Tomato (vibrant red-orange)
+    "#3CB371"  % Medium Sea Green
+    "#1E90FF"  % Dodger Blue
+    "#FFD700"  % Gold
+    "#8A2BE2"  % Blue Violet
+    "#FF1493"  % Deep Pink
+    "#32CD32"  % Lime Green
+];
+
 
 % BER vs EbNo
 figure; 
@@ -62,16 +67,16 @@ for i = 1:n_M
     ber_est_v = ber_est_m(i,:);
     
     p = semilogy(ebno_db_v, ber_theo_v, '--', 'Linewidth', 1.5);
-    p.Color = color_c{i}; 
+    p.Color = color_c(i); 
     hold on; grid on;
-    leg{idx_leg} = sprintf('Theo. M=%d',M); 
+    leg{idx_leg} = sprintf('Teorica M=%d',M); 
     idx_leg = idx_leg + 1;
     
     p = semilogy(ebno_db_v, ber_est_v, '-o', 'Linewidth', 1);
     p.MarkerFaceColor = color_c{i};
     p.MarkerEdgeColor = 'k';
     p.Color = color_c{i}; 
-    leg{idx_leg} = sprintf('Est. M=%d',M); 
+    leg{idx_leg} = sprintf('Estimada M=%d',M); 
     idx_leg = idx_leg + 1;
         
 end
