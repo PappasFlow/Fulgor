@@ -90,5 +90,6 @@ tit = ['BER vs EbNo. ',...
         sprintf('BR=%.0f[GBd]', config_s.tx_s.BR/1e9)];
 title(tit, 'Interpreter','latex','FontSize', fz);
 set(gcf, 'Position', [50 50 500 500],'Color', 'w');
-saveas(gcf,[out_dir,sprintf('fig%d.png',idx_fig)]); idx_fig=idx_fig+1;
+saveas(gcf,[out_dir,sprintf('fig%d.png',idx_fig)]); 
+idx_fig=idx_fig+1;
 
