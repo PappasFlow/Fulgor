@@ -39,45 +39,50 @@ config_s.ch_s.bw = 20e9;                    % BW lim [Hz]
 config_s.rx_s.dwn_phase = 0;                % Downsampling phase
 
 %% Sweep Parameters
-M_v = [4 16];
-n_M = length(M_v);
+config_s.rx_s.plot=0;
+M = 4;
+config_s.tx_s.M = M;
+BW_v = [15e9 16e9 17e9 18e9 20e9];
+n_BW = length(BW_v);
 
 %Increase the default Lsymbs to obtain a meaningful BER calculation
-config_s.tx_s.Lsymbs = 1e7; 
+config_s.tx_s.Lsymbs = 1e6; 
 
 ber_max = 5e-2;
 ber_min = 1e-6;
-n_ber = 4;
+n_ber = 6;
 linespace_v = linspace(log10(ber_min), log10(ber_max), n_ber);
 theo_ber_v = 10.^(linespace_v);
 
 % Save configuration
 file = [out_dir, 'cfg.mat'];
-save(file, 'M_v','theo_ber_v','config_s');
+save(file, 'BW_v','theo_ber_v','config_s');
 
-out_c = cell(n_M, 1); 
+out_c = cell(n_BW, 1); 
 
 %% Instantiation
-
-for i_M = 1:n_M
+for BW_mode = 0:1
+    config_s.ch_s.mode = BW_mode;
+    for i_BW = 1:n_BW
     
-    M = M_v(i_M);
-    ebno_db_v = get_ebno_from_theo_ber(theo_ber_v,M);
-    config_s.tx_s.M = M;
+        BW = BW_v(i_BW);
+        ebno_db_v = get_ebno_from_theo_ber(theo_ber_v,M);
+        config_s.ch_s.bw = BW;
 
-    % Enable parallel pool for faster processing
-    % Rule of thumb for number of workers: Cores - 1    
-    for i_ber = 1:n_ber
-        config_s_p = config_s;
-        config_s_p.ch_s.ebno_db = ebno_db_v(i_ber);
+        % Enable parallel pool for faster processing
+        % Rule of thumb for number of workers: Cores - 1    
+        parfor i_ber = 1:n_ber
+            config_s_p = config_s;
+            config_s_p.ch_s.ebno_db = ebno_db_v(i_ber);
     
-        fprintf('- Running M=%d(%d/%d) ...\n', M,i_ber,n_ber)
+            fprintf('- Running (%d/2) BW=%dGHz(%d/%d) ...\n',BW_mode+1, BW/1e9,i_ber,n_ber)
 
-        out_c{i_ber} = m_simulator(config_s_p);
+            out_c{i_ber} = m_simulator(config_s_p);
+        end
+    
+        name = sprintf('M%dBW%d',BW_mode, BW/1e9);
+        file = [out_dir, 'out_',name,'.mat'];
+        save(file, 'out_c');
+    
     end
-    
-    name = sprintf('M%d',M);
-    file = [out_dir, 'out_',name,'.mat'];
-    save(file, 'out_c');
-    
 end

@@ -16,7 +16,7 @@ function o_data_s = m_simulator(i_cfg_s)
     config_s.en_plots = 0;
 
     % -- Tx --
-    config_s.tx_s.Lsymbs = 1e7;                 % Cantidad de simbolos
+    config_s.tx_s.Lsymbs = 1e5;                 % Cantidad de simbolos
     
     config_s.tx_s.BR = 32e9;                    % Baud rate
     config_s.tx_s.M = 4;                       % Niveles de la modulacion

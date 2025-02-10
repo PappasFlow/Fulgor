@@ -40,14 +40,14 @@ config_s.rx_s.dwn_phase = 0;                % Downsampling phase
 
 %% Testing Parameters
 
-config_s.en_plots = 1;
+config_s.en_plots = 0;
 
 %% Instantiation
 
-out_c = m_simulator(config_s)
+%out_c = m_simulator(config_s)
 
-FigList = findobj(allchild(0), 'flat', 'Type', 'figure');
-for idx_fig = 1:length(FigList)
-  FigHandle = FigList(idx_fig);
-  saveas(FigHandle,[out_dir,sprintf('fig%d.png',length(FigList)+1-idx_fig)]);
-end
+%FigList = findobj(allchild(0), 'flat', 'Type', 'figure');
+%for idx_fig = 1:length(FigList)
+%  FigHandle = FigList(idx_fig);
+%  saveas(FigHandle,[out_dir,sprintf('fig%d.png',length(FigList)+1-idx_fig)]);
+%end
