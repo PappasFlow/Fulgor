@@ -40,7 +40,7 @@ function o_data_s = m_simulator(i_cfg_s)
     config_s.rx_s.step=2e-3;                   %step size eq
     config_s.rx_s.plot=1;                      %plots on off
     config_s.rx_s.dwn_phase = 0;               % Downsampling phase
-    
+    config_s.rx_s.ntaps = 101;
     %--------------------------%
     %       REASSIGNMENT
     %--------------------------%

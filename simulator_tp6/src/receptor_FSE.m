@@ -10,6 +10,7 @@ function [o_data_s] = receptor_FSE(i_rx_s, i_config_s)
     config.plot=0;
     config.step=2e-3;
     config.dwn_phase = 0;
+    config.ntaps = 101;
     
     %--------------------------%
     %       REASSIGNMENT
@@ -47,7 +48,7 @@ function [o_data_s] = receptor_FSE(i_rx_s, i_config_s)
     %         PROCESS
     %--------------------------%
 %%
-    NTAPS=101;
+    NTAPS=config.ntaps;
     step = config.step;
     leak = 1e-3;
     Xbuffer = zeros(NTAPS,1);
